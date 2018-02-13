@@ -56,6 +56,7 @@ def audioToText(fileName):
   if(fs != 16000):
     print('Can process only 16000Hz input wav files')
     print('Skipping', fileName)
+    return []
   else:
     words = ds.stt(audio, fs)
   inference_end = timer() - inference_start
@@ -73,20 +74,22 @@ def count(words):
   with open('data.json', 'w') as outfile:
     json.dump(data, outfile)
 
-
 def findAndProcessAudio():
   print('Looking for %s files' % (EXTENSION))
   fileList = listdir(AUDIO_DIR)
   fileList = [ fileName for fileName in fileList if path.splitext(fileName)[1] == EXTENSION]
   for fileName in fileList:
     words = audioToText(fileName)
+    print("Words Inferred")
+    print(words)
     count(words)
     rename(fileName, fileName+'.processed')
 
 initialize()
 
 while True:
-  findAndProcessAudio()
-  time.sleep(POLL_TIME)
-
-# http://www.phpied.com/taking-mozillas-deepspeech-for-a-spin/
+  try:
+    findAndProcessAudio()
+    time.sleep(POLL_TIME)
+  except KeyboardInterrupt:
+    exit()

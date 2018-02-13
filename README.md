@@ -28,3 +28,11 @@ For python dependencies
 
 ## Download Deepspeech Models from
 https://github.com/mozilla/DeepSpeech/releases
+
+## Audio file conversion
+```
+  ffmpeg -i source.wav -acodec pcm_s16le -ar 16000 -ac 1 dest.wav
+```
+
+## Reference
+http://www.phpied.com/taking-mozillas-deepspeech-for-a-spin/
